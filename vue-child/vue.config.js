@@ -2,8 +2,10 @@ module.exports = {
     configureWebpack: {
         output: {
             library: 'singleVue',
-            library: 'umd'
+            libraryTarget: 'umd'
         },
-        devServer: 10000
+        devServer: {
+            port: 10000
+        }
     }
 }
