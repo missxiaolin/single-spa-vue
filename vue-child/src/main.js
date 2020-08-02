@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+// import store from './store'
 import singleSpaVue from 'single-spa-vue'
 
 Vue.config.productionTip = false
@@ -14,7 +14,7 @@ Vue.config.productionTip = false
 
 // 需要父应用加载子应用
 
-const app = {
+const appOptions = {
   el: '#vue', // 挂载父应用id 为vue标签中
   router,
   render: h => h(App)
@@ -22,8 +22,13 @@ const app = {
 
 const vueLifeCycle = singleSpaVue({
   Vue,
-  app
+  appOptions
 })
+
+// 如果是父应用引用我
+if (window.singleSpaNavigate) {
+  __webpack_public_path__ = 'http://localhost:10000/'
+}
 
 // 协议接入 父应用会调用这个方法
 export const bootstrap = vueLifeCycle.bootstrap
