@@ -30,6 +30,12 @@ if (window.singleSpaNavigate) {
   __webpack_public_path__ = 'http://localhost:10000/'
 }
 
+if (!window.singleSpaNavigate) {
+  delete appOptions.el
+  new Vue(appOptions).$mount('#app')
+}
+
+
 // 协议接入 父应用会调用这个方法
 export const bootstrap = vueLifeCycle.bootstrap
 export const mount = vueLifeCycle.mount
