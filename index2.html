@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 如果应用 加载 刚开始我加载A应用window.a B应用 （Window.a）
+        // 但应用切换 沙箱 创造一个干净的环境给这个子应用使用，当切换时可以选择丢弃属性和恢复属性
+
+        // js 沙箱 proxy
+        
+        // 快照沙箱
+
+        class SnapshostSandbox {
+            constructor() {
+                this.proxy = window
+                this.modifyPropsMap = {} // 记录window 的修改
+                this.active()
+            }
+
+            active() {
+                this.modifyPropsMap = {}
+                for (let prop in window) {
+                    if (window.hasOwnProperty(prop)) {
+                        this.windowSnapshot[prop] = window[prop] || ''
+                    }
+                }
+                Object.keys(this.modifyPropsMap).forEach(p => {
+                    window[p] = this.modifyPropsMap[p]
+                })
+            }
+
+            inactive() {
+                for (const prop in window) {
+                    if (window.hasOwnProperty(prop)) {
+                        if (window[prop] !== this.windowSnapshot[prop]) {
+                            this.modifyPropsMap[prop] = window[prop]
+                            window[prop] = this.windowSnapshot[prop]
+                        }
+                    }
+                }
+            }
+        }
+
+        let sandbox = new SnapshostSandbox()
+
+        ((window) => {
+            window.a = 1
+            window.b = 2
+            console.log(window.a, window.b)
+            sandbox.inactive()
+            console.log(window.a, window.b)
+            window.active()
+            console.log(window.a, window.b)
+        })(sandbox.proxy) // sandbox.proxy就是window
+    </script>
+</body>
+</html>
