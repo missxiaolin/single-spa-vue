@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <p>hello word</p>
+        <div id="shadow"></div>
+        <script>
+            let shadom = document.getElementById('shadow')
+            let shadowDom = shadom.attachShadow({mode: 'closed'})
+            let pElm = document.createElement('p')
+            pElm.innerHTML = 'hello'
+            let styleEml = document.createElement('style')
+            styleEml.textContent = `
+                p {color: red;}
+            `
+            shadowDom.appendChild(pElm)
+            shadowDom.appendChild(styleEml)
+        </script>
+    </div>
+</body>
+</html>
